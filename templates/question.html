@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>質問詳細 - 匿名Q&Aボード</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+  <header>
+    <a href="{{ url_for('index') }}">
+      <h1>質問詳細</h1>
+      <div class="user-info">
+        <!-- これはバックエンドの奴：python(Flask)がデータベースからstudent_numberを受け取れた場合学籍番号とログアウトボタンを作る -->
+        {% if session.get('student_number') %}
+        学籍番号: {{ session.get('student_number') }} (<a href="{{ url_for('logout') }}">ログアウト</a>)
+        {% endif %}
+      </div>
+    </a>
+  </header>
+
+  <main>
+    <!-- 質問内容表示 -->
+    <article class="question-detail">
+      <h2 class="question-title">{{ question['question_content'] | e }}</h2>
+      <p class="timestamp">投稿日時: {{ question['created_at'] }}</p>
+    </article>
+
+    <!-- 回答一覧 -->
+    <section id="answers-list">
+      <h3>回答一覧</h3>
+      <ul>
+        {% for answer in answers %}
+        <li>
+          <p>{{ answer['answer_content'] | e }}</p>
+          <span class="timestamp">{{ answer['created_at'] }}</span>
+        </li>
+        {% else %}
+        <li>まだ回答がありません。</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <!-- 回答投稿フォーム -->
+    <section id="post-answer">
+      <h3>回答を投稿する</h3>
+      <form action="{{ url_for('answer', question_id=question['id']) }}" method="POST">
+        <textarea name="answer" rows="4" placeholder="回答内容を入力してください" required></textarea>
+        <button type="submit" class="post-answer-button">回答を投稿する</button>
+      </form>
+    </section>
+  </main>
+</body>
+
+</html>

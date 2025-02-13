@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ログイン - 匿名Q&Aボード</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="login-container">
+    <h2>ログイン</h2>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form action="{{ url_for('login') }}" method="POST">
+
+      <label for="student_number">学籍番号</label>
+      <input type="text" name="student_number" id="student_number" required placeholder="123456789">
+
+      <label for="passphrase">パスワード
+      </label>
+      <input type="password" name="passphrase" id="passphrase" required placeholder="合言葉を入力してください" inputmode="text">
+      <!-- <input type="text" name="passphrase" id="passphrase" required placeholder="合言葉を入力してください" class="masked-input" style="-webkit-text-security: disc; text-security: disc;"> -->
+
+      <button type="submit">ログイン</button>
+    </form>
+  </div>
+</body>
+</html>
+

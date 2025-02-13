@@ -1,0 +1,189 @@
+:root {
+  --color-theme: #151a8c;
+  --color-text: #333333;
+}
+
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+  color: var(--color-text);
+}
+
+header {
+  background-color: var(--color-theme);
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+header h1 {
+  margin: 0;
+}
+
+.user-info {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+main {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+h2, h3 {
+  color: var(--color-text);
+}
+
+textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+button {
+  background-color: var(--color-theme);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+button:hover {
+  background-color: var(--color-theme);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  border-bottom: 1px solid #dee2e6;
+  padding: 1rem 0;
+}
+
+.document{
+  height: 80px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  padding: 10px;
+  font-size: 16px
+}
+
+.question-title{
+  word-break: break-all;
+}
+
+.timestamp {
+  display: block;
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 0.5rem;
+}
+
+.back-link {
+  margin-top: 1rem;
+}
+
+.back-link a {
+  text-decoration: none;
+  color: var(--color-theme);
+}
+
+.back-link a:hover {
+  /* text-decoration: underline; */
+  text-decoration: none;
+}
+
+.post-answer-button{
+  margin-bottom: auto;
+}
+
+
+
+/* フッター */
+footer {
+  background-color: var(--color-theme);
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+/* ログイン画面用スタイル */
+.login-container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 2rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.login-container form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.login-container form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.login-container form button {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: var(--color-theme);
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-container form button:hover {
+  background-color: var(--color-theme);
+}
+
+/* フラッシュメッセージ */
+.flashes {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+.flashes li {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
