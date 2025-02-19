@@ -6,9 +6,11 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 def create_app():
     app = Flask(__name__)
+
+    # セッション情報の保護用の秘密鍵　環境変数 "SECRET_KEY" を読み込み（存在しない場合は警告用のデフォルト値）
+    app.secret_key = os.environ.get('SECRET_KEY', 'default_development_key')
+    
     app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
-    # セッション情報の保護用の秘密鍵（本番環境では環境変数から読み込む等の対策を）
-    app.secret_key = 'your_secret_key_here'
     
     # セッションの有効期限を30分に設定
     app.permanent_session_lifetime = timedelta(minutes=30)
