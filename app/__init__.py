@@ -5,7 +5,10 @@ from datetime import timedelta
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__,
+                template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates'),
+                static_folder=os.path.join(os.path.dirname(__file__), '..', 'static'),
+                static_url_path='/static')
 
     # セッション情報の保護用の秘密鍵　環境変数 "SECRET_KEY" を読み込み（存在しない場合は警告用のデフォルト値）
     app.secret_key = os.environ.get('SECRET_KEY', 'default_development_key')

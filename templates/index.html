@@ -11,7 +11,7 @@
     <h1>匿名Q&Aボード</h1>
     <div class="user-info">
       {% if session.get('student_number') %}<!-- これはバックエンドの奴：python(Flask)がデータベースからstudent_numberを受け取れた場合学籍番号とログアウトボタンを作る -->
-        学籍番号: {{ session.get('student_number') }} (<a href="{{ url_for('logout') }}">ログアウト</a>)
+        学籍番号: {{ session.get('student_number') }} (<a href="{{ url_for('main.logout') }}">ログアウト</a>)
       {% endif %}
     </div>
   </header>
@@ -33,7 +33,7 @@
         <!-- 質問の数だけ繰り返し表示させる -->
         {% for question in questions %}
           <li>
-            <a href="{{ url_for('question_detail', question_id=question['id']) }}" class="document">
+            <a href="{{ url_for('main.question_detail', question_id=question['id']) }}" class="document">
               {{ question['question_content'] | e }}
             </a>
             <span class="timestamp">{{ question['created_at'] }}</span>

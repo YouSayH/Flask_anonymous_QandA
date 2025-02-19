@@ -1,6 +1,13 @@
 :root {
   --color-theme: #151a8c;
+  --color-accent: #4CAF50;
   --color-text: #333333;
+  --color-text-sub: #666666;
+  --color-bg: #f8f9fa;
+  --color-white: #fff;
+  --color-border: #ced4da;
+  --color-answer-bg-odd: #e0f7fa;
+  --color-answer-bg-even: #f0f9f4;
 }
 
 
@@ -8,13 +15,13 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f8f9fa;
+  background-color: var(--color-bg);
   color: var(--color-text);
 }
 
 header {
   background-color: var(--color-theme);
-  color: #fff;
+  color: var(--color-white);
   padding: 1rem;
   text-align: center;
   text-decoration: none;
@@ -32,9 +39,10 @@ header h1 {
 main {
   max-width: 800px;
   margin: 2rem auto;
-  padding: 1rem;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  background-color: var(--color-white);
+  box-shadow: 0 2 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 section {
@@ -47,26 +55,40 @@ h2, h3 {
 
 textarea {
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ced4da;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
   border-radius: 4px;
   font-size: 1rem;
   resize: vertical;
+  color: var(--color-text);
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--color-theme);
+  box-shadow: 0 0 0 2px rgba(var(--color-theme-rgb), 0.2);
 }
 
 button {
   background-color: var(--color-theme);
-  color: #fff;
+  color: var(--color-white);
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   font-size: 1rem;
   border-radius: 4px;
   cursor: pointer;
   margin-top: 0.5rem;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background-color: var(--color-theme);
+}
+
+button:active {
+  background-color: var(--color-theme);
+  transform: translateY(1px);
+  box-shadow: none;
 }
 
 ul {
@@ -97,7 +119,7 @@ ul li {
 .timestamp {
   display: block;
   font-size: 0.8rem;
-  color: #6c757d;
+  color: var(--color-text-sub);
   margin-top: 0.5rem;
 }
 
@@ -119,6 +141,25 @@ ul li {
   margin-bottom: auto;
 }
 
+/* 回答一覧 */
+#answers-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+#answers-list ul li {
+  border-bottom: 1px solid #dee2e6;
+  padding: 1rem 0;
+  background-color: var(--color-white);
+}
+
+#answers-list ul li:nth-child(odd) {
+  background-color: var(--color-answer-bg-odd);
+}
+
+#answers-list ul li:nth-child(even) {
+  background-color: var(--color-answer-bg-even);
+}
 
 
 /* フッター */
@@ -137,39 +178,51 @@ footer {
   max-width: 400px;
   margin: 100px auto;
   padding: 2rem;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  background-color: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-white);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .login-container h2 {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-text-main);
 }
 
 .login-container form label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
+  color: var(--color-text-main);
 }
 
 .login-container form input {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.75rem;
   margin-bottom: 1rem;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--color-border);
   border-radius: 4px;
+  color: var(--color-text);
 }
+
+.login-container form input:focus {
+  outline: none;
+  border-color: var(--color-theme);
+  box-shadow: 0 0 0 2px rgba(var(--color-theme-rgb), 0.2);
+}
+
 
 .login-container form button {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.75rem;
   background-color: var(--color-theme);
   border: none;
-  color: #fff;
+  color: var(--color-white);
   font-size: 1rem;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .login-container form button:hover {

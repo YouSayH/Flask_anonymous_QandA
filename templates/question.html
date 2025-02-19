@@ -10,12 +10,12 @@
 
 <body>
   <header>
-    <a href="{{ url_for('index') }}">
+    <a href="{{ url_for('main.index') }}">
       <h1>質問詳細</h1>
       <div class="user-info">
         <!-- これはバックエンドの奴：python(Flask)がデータベースからstudent_numberを受け取れた場合学籍番号とログアウトボタンを作る -->
         {% if session.get('student_number') %}
-        学籍番号: {{ session.get('student_number') }} (<a href="{{ url_for('logout') }}">ログアウト</a>)
+        学籍番号: {{ session.get('student_number') }} (<a href="{{ url_for('main.logout') }}">ログアウト</a>)
         {% endif %}
       </div>
     </a>
@@ -46,7 +46,7 @@
     <!-- 回答投稿フォーム -->
     <section id="post-answer">
       <h3>回答を投稿する</h3>
-      <form action="{{ url_for('answer', question_id=question['id']) }}" method="POST">
+      <form action="{{ url_for('main.answer', question_id=question['id']) }}" method="POST">
         <textarea name="answer" rows="4" placeholder="回答内容を入力してください" required></textarea>
         <button type="submit" class="post-answer-button">回答を投稿する</button>
       </form>
