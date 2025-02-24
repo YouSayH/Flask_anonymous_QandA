@@ -20,12 +20,12 @@
     {% endwith %}
     <form action="{{ url_for('main.login') }}" method="POST">
 
-      <label for="student_number">学籍番号</label>
-      <input type="text" name="student_number" id="student_number" required placeholder="123456789">
+      <label for="st_num">学籍番号</label>
+      <input type="text" name="st_num" id="st_num" required placeholder="123456789">
 
-      <label for="passphrase">パスワード
+      <label for="pass_w">パスワード
       </label>
-      <input type="password" name="passphrase" id="passphrase" required placeholder="合言葉を入力してください" inputmode="text">
+      <input type="password" name="pass_w" id="pass_w" required placeholder="合言葉を入力してください" inputmode="text">
       <!-- <input type="text" name="passphrase" id="passphrase" required placeholder="合言葉を入力してください" class="masked-input" style="-webkit-text-security: disc; text-security: disc;"> -->
 
       <button type="submit">ログイン</button>

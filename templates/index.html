@@ -1,49 +1,112 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>匿名Q&Aボード</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
+
 <body>
   <header>
-    <h1>匿名Q&Aボード</h1>
-    <div class="user-info">
-      {% if session.get('student_number') %}<!-- これはバックエンドの奴：python(Flask)がデータベースからstudent_numberを受け取れた場合学籍番号とログアウトボタンを作る -->
-        学籍番号: {{ session.get('student_number') }} (<a href="{{ url_for('main.logout') }}">ログアウト</a>)
+    <div class="toggle-sidebar" onclick="toggleSidebar()">
+      <span></span>
+    </div>
+    <div class="header-text">
+      <h1>匿名Q&Aボード</h1>
+      {% if session.get('st_num') %}
+      <div class="user-info">
+        学籍番号: {{ session.get('st_num') }}
+      </div>
       {% endif %}
     </div>
+    {% if session.get('st_num') %}
+    <div class="logout-button">
+      <a href="{{ url_for('main.logout') }}">ログアウト</a>
+    </div>
+    {% endif %}
   </header>
 
-  <main>
-    <!-- 新規質問投稿フォーム -->
-    <section id="ask-question">
-      <h2>新規質問を投稿</h2>
-      <form action="/ask" method="POST">
-        <textarea name="question" rows="4" placeholder="質問内容を入力してください" required></textarea>
-        <button type="submit">質問を投稿する</button>
-      </form>
-    </section>
 
-    <!-- 質問一覧 -->
-    <section id="questions-list">
-      <h2>質問一覧</h2>
+  <!-- メインの横並びレイアウトを囲むコンテナ -->
+  <div class="main-container">
+    <!-- サイドメニュー -->
+    <nav class="sidebar">
       <ul>
-        <!-- 質問の数だけ繰り返し表示させる -->
-        {% for question in questions %}
-          <li>
-            <a href="{{ url_for('main.question_detail', question_id=question['id']) }}" class="document">
-              {{ question['question_content'] | e }}
-            </a>
-            <span class="timestamp">{{ question['created_at'] }}</span>
-          </li>
-        {% else %}
-          <li>まだ質問がありません。</li>
+        <!-- 「すべて」のリンク -->
+        <li>
+          <a href="{{ url_for('main.category', category='すべて') }}"
+            class="{% if current_category == 'すべて' %}active{% endif %}">
+            すべて
+          </a>
+        </li>
+        <!-- 固定カテゴリーリストをループで出力 -->
+        {% for category in categories %}
+        <li>
+          <a href="{{ url_for('main.category', category=category) }}"
+            class="{% if current_category == category %}active{% endif %}">
+            {{ category }}
+          </a>
+        </li>
         {% endfor %}
       </ul>
-    </section>
-  </main>
+    </nav>
+
+
+    <!-- メインコンテンツ -->
+    <main>
+      <!-- 新規質問投稿フォーム -->
+      <section id="ask-question">
+        <h2>新規質問を投稿</h2>
+
+        <form action="/ask" method="POST">
+          <textarea name="question" rows="4" placeholder="質問内容を入力してください" required></textarea>
+
+          <div class="category-select">
+            <label for="category">カテゴリーを選択</label>
+            <select class="category-pulldown" name="category" id="category" required>
+              <option value="">-- カテゴリーを選択 --</option>
+              {% for category in categories %}
+              <option value="{{ category }}">{{ category }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <button type="submit">質問を投稿する</button>
+        </form>
+
+      </section>
+
+      <!-- 質問一覧 -->
+      <section id="questions-list">
+        <h2>質問一覧</h2>
+        <ul>
+          {% for question in questions %}
+          <li>
+            <a href="{{ url_for('main.question_detail', question_id=question['id']) }}" class="document">
+              {{- question['question_content'] | e -}}
+            </a>
+            <span class="category">[{{ question['category'] }}]</span>
+            <span class="timestamp">{{ question['created_at'] }}</span>
+          </li>
+          {% else %}
+          <li>まだ質問がありません。</li>
+          {% endfor %}
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const toggleButton = document.querySelector('.toggle-sidebar');
+      sidebar.classList.toggle('open');
+      toggleButton.classList.toggle('active');
+    }
+  </script>
 
 </body>
+
 </html>

@@ -1,9 +1,20 @@
 # app/routes.py
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 import sqlite3 as sql
-from functools import wraps
+from functools import wraps 
 from datetime import datetime
 import pytz
+
+
+# 固定のカテゴリーリスト（「すべて」は含めない）
+CATEGORIES = [
+    '基本情報技術者試験', 'ITパスポート', 'セキュリティ教科', 'ディジタル情報', 
+    '坂上先生教科', 'コンピュータ基礎', '情報システム(要件定義)', 'データサイエンスとAI',
+    'マネジメントと戦略', 'データベース', 'ネットワーク基礎', 'データ構造とアルゴリズム',
+    'プログラミング演習Python', 'プログラミング演習C言語', 'プログラミング演習Java',
+    'Webアプリ', '画像制作', '動画制作', 'AR・VR', '半導体とアプリケーション',
+    'ホームページ制作', 'PCスキルアップ', 'プレゼン', '地域経済', '情報総合実習', 'その他'
+]
 
 # blueprintの作成
 main = Blueprint('main', __name__)
@@ -41,16 +52,16 @@ def login_required(f):
 @main.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        student_number = request.form['student_number'].strip()
-        passphrase = request.form['passphrase'].strip()
+        st_num = request.form['st_num'].strip()
+        pass_w = request.form['pass_w'].strip()
         
         con = get_db_connection()
-        user = con.execute("SELECT * FROM users WHERE student_number = ?", (student_number,)).fetchone()
+        user = con.execute("SELECT * FROM users WHERE st_num = ?", (st_num,)).fetchone()
         con.close()
         
-        if user and user['passphrase'] == passphrase:
+        if user and user['pass_w'] == pass_w:
             session['user_id'] = user['id']
-            session['student_number'] = user['student_number']
+            session['st_num'] = user['st_num']
             session.permanent = True  # セッションの有効期限を有効化
             flash('ログイン成功しました。')
             return redirect(url_for('main.index'))
@@ -73,10 +84,66 @@ def logout():
 @login_required
 def index():
     con = get_db_connection()
-    cur = con.execute("SELECT id, question_content, created_at FROM questions ORDER BY created_at DESC")
+    cur = con.execute(
+        "SELECT id, question_content, category, created_at FROM questions ORDER BY created_at DESC"
+    )
     questions = cur.fetchall()
     con.close()
-    return render_template("index.html", questions=questions)
+    # current_category が未指定の場合は全件表示として扱う（例：None または 'すべて'）
+    return render_template("index.html", questions=questions, categories=CATEGORIES, current_category='すべて')
+
+@main.route('/category/<category>')
+@login_required
+def category(category):
+    con = get_db_connection()
+    if category == 'すべて':
+        # フィルタせず全件表示
+        cur = con.execute(
+            "SELECT id, question_content, category, created_at FROM questions ORDER BY created_at DESC"
+        )
+    else:
+        # 選択されたカテゴリーの質問のみ取得
+        cur = con.execute(
+            "SELECT id, question_content, category, created_at FROM questions WHERE category = ? ORDER BY created_at DESC",
+            (category,)
+        )
+    questions = cur.fetchall()
+    con.close()
+    return render_template("index.html", questions=questions, categories=CATEGORIES, current_category=category)
+
+
+@main.route('/select_best/<int:question_id>', methods=['POST'])
+@login_required
+def select_best(question_id):
+    # Retrieve the selected answer id from the form
+    selected_answer_id = request.form.get('best_answer')
+    if selected_answer_id:
+        con = get_db_connection()
+        # Fetch user_id and st_num from the answers table for the chosen answer
+        answer = con.execute(
+            "SELECT user_id, st_num FROM answers WHERE id = ?",
+            (selected_answer_id,)
+        ).fetchone()
+        if answer:
+            best_answer_user_id = answer['user_id']
+            best_st_num = answer['st_num']
+            # Update the questions table with the best answer details including st_num
+            con.execute(
+                "UPDATE questions SET best_answer_id = ?, best_answer_user_id = ?, best_st_num = ? WHERE id = ?",
+                (selected_answer_id, best_answer_user_id, best_st_num, question_id)
+            )
+            con.commit()
+            flash('ベストアンサーが更新されました。')
+        else:
+            flash('回答が見つかりませんでした。')
+        con.close()
+    else:
+        flash('ベストアンサーを選択してください。')
+    return redirect(url_for('main.question_detail', question_id=question_id))
+
+
+
+
 
 @main.route('/question/<int:question_id>')
 @login_required
@@ -91,15 +158,17 @@ def question_detail(question_id):
 @login_required
 def ask():
     question_content = request.form['question']
-    if question_content:
+    category = request.form['category']
+    if question_content and category:
         con = get_db_connection()
         con.execute(
-            "INSERT INTO questions (question_content, date, user_id) VALUES (?, CURRENT_TIMESTAMP, ?)",
-            (question_content, session['user_id'])
+            "INSERT INTO questions (question_content, category, date, user_id) VALUES (?, ?, CURRENT_TIMESTAMP, ?)",
+            (question_content, category, session['user_id'])
         )
         con.commit()
         con.close()
     return redirect(url_for('main.index'))
+
 
 @main.route('/answer/<int:question_id>', methods=['POST'])
 @login_required
@@ -108,8 +177,8 @@ def answer(question_id):
     if answer_content:
         con = get_db_connection()
         con.execute(
-            "INSERT INTO answers (question_id, answer_content, user_id) VALUES (?, ?, ?)",
-            (question_id, answer_content, session['user_id'])
+            "INSERT INTO answers (question_id, answer_content, user_id, st_num) VALUES (?, ?, ?, ?)",
+            (question_id, answer_content, session['user_id'], session['st_num'])
         )
         con.commit()
         con.close()
