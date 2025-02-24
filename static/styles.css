@@ -8,16 +8,18 @@
   --color-border: #ced4da;
   --color-answer-bg-odd: #e0f7fa;
   --color-answer-bg-even: #f0f9f4;
+  --color-theme-rgb: 21, 26, 140;
+  --color-border-light: #dee2e6;
+  --color-best-answer: #FFD700;
+  --color-best-answer-bg: #FFF8DC;
+  --color-flash: #6c757d;
+  --color-text-main: #333333;
 }
-
-
 
 body {
   margin: 0;
   padding: 0;
 }
-
-
 
 header {
   position: fixed;
@@ -25,8 +27,8 @@ header {
   left: 0;
   width: 100%;
   height: 65px;
-  background-color: #151a8c;
-  color: #fff;
+  background-color: var(--color-theme);
+  color: var(--color-white);
   display: flex;
   align-items: center;
   padding: 10px;
@@ -44,6 +46,80 @@ header {
 
 header h1 {
   margin: 0;
+}
+
+main {
+  min-height: 100vh;
+  background-color: var(--color-white);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+h2,
+h3 {
+  color: var(--color-text);
+}
+
+textarea {
+  width: 60%;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 1rem;
+  resize: vertical;
+  color: var(--color-text);
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--color-theme);
+  box-shadow: 0 0 0 2px rgba(var(--color-theme-rgb), 0.2);
+}
+
+button {
+  background-color: var(--color-theme);
+  color: var(--color-white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--color-theme);
+}
+
+button:active {
+  background-color: var(--color-theme);
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  border-bottom: 1px solid var(--color-border-light);
+  padding: 1rem 0;
+}
+
+footer {
+  background-color: var(--color-theme);
+  color: var(--color-white);
+  text-align: center;
+  padding: 1rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
 .user-info {
@@ -73,7 +149,7 @@ header h1 {
   left: 0;
   width: 240px;
   height: calc(100vh - 75px);
-  background-color: #fff;
+  background-color: var(--color-white);
   border-right: 1px solid var(--color-border);
   padding: 1rem;
   box-sizing: border-box;
@@ -101,12 +177,6 @@ header h1 {
   color: var(--color-theme);
 }
 
-main {
-  min-height: 100vh;
-  background-color: var(--color-white);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
 
 .toggle-sidebar {
   width: 30px;
@@ -188,62 +258,6 @@ main {
 
 }
 
-section {
-  margin-bottom: 2rem;
-}
-
-h2,
-h3 {
-  color: var(--color-text);
-}
-
-textarea {
-  width: 60%;
-  padding: 0.75rem;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  font-size: 1rem;
-  resize: vertical;
-  color: var(--color-text);
-}
-
-textarea:focus {
-  outline: none;
-  border-color: var(--color-theme);
-  box-shadow: 0 0 0 2px rgba(var(--color-theme-rgb), 0.2);
-}
-
-button {
-  background-color: var(--color-theme);
-  color: var(--color-white);
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: var(--color-theme);
-}
-
-button:active {
-  background-color: var(--color-theme);
-  transform: translateY(1px);
-  box-shadow: none;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-ul li {
-  border-bottom: 1px solid #dee2e6;
-  padding: 1rem 0;
-}
 
 .document {
   min-height: 80px;
@@ -322,7 +336,7 @@ ul li {
 }
 
 #answers-list ul li {
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid var(--color-border-light);
   padding: 1rem 0;
   background-color: var(--color-white);
 }
@@ -336,15 +350,6 @@ ul li {
 }
 
 
-footer {
-  background-color: var(--color-theme);
-  color: #fff;
-  text-align: center;
-  padding: 1rem;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
 
 .login-container {
   max-width: 400px;
@@ -408,17 +413,17 @@ footer {
 }
 
 .flashes li {
-  color: #6c757d;
+  color: var(--color-flash);
   font-size: 0.9rem;
 }
 
 .best-answer-badge {
   display: inline-block;
-  color: #FFD700;
+  color: var(--color-best-answer);
   font-weight: bold;
   margin: 5px 0;
   padding: 5px 10px;
-  background-color: #FFF8DC;
+  background-color: var(--color-best-answer-bg);
   border-radius: 4px;
 }
 
