@@ -68,7 +68,9 @@
             <select class="category-pulldown" name="category" id="category" required>
               <option value="">-- カテゴリーを選択 --</option>
               {% for category in categories %}
-              <option value="{{ category }}">{{ category }}</option>
+              <option value="{{ category }}" {% if current_category == category %}selected{% endif %}>
+                {{ category }}
+              </option>
               {% endfor %}
             </select>
           </div>
