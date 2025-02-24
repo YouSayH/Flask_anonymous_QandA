@@ -112,14 +112,33 @@ def category(category):
     return render_template("index.html", questions=questions, categories=CATEGORIES, current_category=category)
 
 
+@main.route('/question/<int:question_id>')
+@login_required
+def question_detail(question_id):
+    con = get_db_connection()
+    question = con.execute("SELECT * FROM questions WHERE id = ?", (question_id,)).fetchone()
+    answers = con.execute("SELECT * FROM answers WHERE question_id = ? ORDER BY created_at DESC", (question_id,)).fetchall()
+    con.close()
+    # 現在のユーザーが質問投稿者かどうかをチェック
+    is_question_owner = question['user_id'] == session['user_id']
+    return render_template("question.html", question=question, answers=answers, is_question_owner=is_question_owner)
+
 @main.route('/select_best/<int:question_id>', methods=['POST'])
 @login_required
 def select_best(question_id):
-    # Retrieve the selected answer id from the form
+    con = get_db_connection()
+    # 質問の所有者を確認
+    question = con.execute("SELECT user_id FROM questions WHERE id = ?", (question_id,)).fetchone()
+    
+    # 質問投稿者でない場合はアクセスを拒否
+    if not question or question['user_id'] != session['user_id']:
+        con.close()
+        flash('ベストアンサーを選ぶ権限がありません。')
+        return redirect(url_for('main.question_detail', question_id=question_id))
+
+    # 以下、元のコード
     selected_answer_id = request.form.get('best_answer')
     if selected_answer_id:
-        con = get_db_connection()
-        # Fetch user_id and st_num from the answers table for the chosen answer
         answer = con.execute(
             "SELECT user_id, st_num FROM answers WHERE id = ?",
             (selected_answer_id,)
@@ -127,7 +146,6 @@ def select_best(question_id):
         if answer:
             best_answer_user_id = answer['user_id']
             best_st_num = answer['st_num']
-            # Update the questions table with the best answer details including st_num
             con.execute(
                 "UPDATE questions SET best_answer_id = ?, best_answer_user_id = ?, best_st_num = ? WHERE id = ?",
                 (selected_answer_id, best_answer_user_id, best_st_num, question_id)
@@ -136,23 +154,10 @@ def select_best(question_id):
             flash('ベストアンサーが更新されました。')
         else:
             flash('回答が見つかりませんでした。')
-        con.close()
     else:
         flash('ベストアンサーを選択してください。')
-    return redirect(url_for('main.question_detail', question_id=question_id))
-
-
-
-
-
-@main.route('/question/<int:question_id>')
-@login_required
-def question_detail(question_id):
-    con = get_db_connection()
-    question = con.execute("SELECT * FROM questions WHERE id = ?", (question_id,)).fetchone()
-    answers = con.execute("SELECT * FROM answers WHERE question_id = ? ORDER BY created_at DESC", (question_id,)).fetchall()
     con.close()
-    return render_template("question.html", question=question, answers=answers)
+    return redirect(url_for('main.question_detail', question_id=question_id))
 
 @main.route('/ask', methods=['POST'])
 @login_required

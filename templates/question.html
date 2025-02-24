@@ -37,28 +37,33 @@
       </article>
 
       <!-- 回答一覧 -->
-      <form method="POST" action="{{ url_for('main.select_best', question_id=question['id']) }}">
-        <section id="answers-list">
-          <h3>回答一覧</h3>
-          <ul>
-            {% for answer in answers %}
-            <li>
-              <input type="radio" name="best_answer" value="{{ answer['id'] }}" {% if
-                question['best_answer_id']==answer['id'] %} checked {% endif %}>
-              {% if question['best_answer_id'] == answer['id'] %}
+      {% if is_question_owner %}
+        <form method="POST" action="{{ url_for('main.select_best', question_id=question['id']) }}">
+      {% endif %}
+      <section id="answers-list">
+        <h3>回答一覧</h3>
+        <ul>
+          {% for answer in answers %}
+          <li>
+            {% if is_question_owner %}
+              <input type="radio" name="best_answer" value="{{ answer['id'] }}" 
+                     {% if question['best_answer_id'] == answer['id'] %} checked {% endif %}>
+            {% endif %}
+            {% if question['best_answer_id'] == answer['id'] %}
               <span class="best-answer-badge">🏅 ベストアンサー</span>
-              {% endif %}
-              <p class="answer-content">{{ answer['answer_content'] | e }}</p>
-              <span class="timestamp">{{ answer['created_at'] }}</span>
-            </li>
-            {% else %}
-            <li>まだ回答がありません。</li>
-            {% endfor %}
-          </ul>
-        </section>
+            {% endif %}
+            <p class="answer-content">{{ answer['answer_content'] | e }}</p>
+            <span class="timestamp">{{ answer['created_at'] }}</span>
+          </li>
+          {% else %}
+          <li>まだ回答がありません。</li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% if is_question_owner %}
         <button type="submit">ベストアンサーを決定する</button>
       </form>
-
+      {% endif %}
 
       <!-- 回答投稿フォーム -->
       <section id="post-answer">
