@@ -280,10 +280,15 @@ footer {
   text-decoration: none;
 }
 
-.question-container {
+.top-section {
   margin-top: 75px;
   padding: 1rem;
 }
+
+/* .question-container {
+  margin-top: 75px;
+  padding: 1rem;
+} */
 
 .answer-content {
   white-space: pre-wrap;
@@ -323,7 +328,7 @@ footer {
 }
 
 .post-answer-form textarea {
-  width: 100%;
+  width: 80%;
 }
 
 .post-answer-button {
