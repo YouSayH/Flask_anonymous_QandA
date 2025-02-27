@@ -4,6 +4,6 @@
 
 インストールすべきもの
 <br>
-・python3 ・venv ・Flask ・Gunicorn
+・python3 ・venv ・Flask ・Gunicorn　・python-dotenv
 <br>
-・Werkzeug ・SQLite3 ・pytz
+・Werkzeug ・SQLite3 ・pytz ・google-generativeai
