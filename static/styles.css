@@ -295,7 +295,7 @@ footer {
 .timestamp {
   display: block;
   font-size: 0.8rem;
-  color: var(--color-text-sub);
+  color: #6c757d;
   margin-top: 0.5rem;
 }
 
@@ -446,3 +446,87 @@ footer {
   color: var(--color-theme);
   opacity: 0.8;
 }
+
+/* Geminiキャラクター表示のスタイル */
+.content-wrapper {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.questions-list {
+  flex: 1;
+}
+
+.ask-gemini-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.ask-gemini-container .ask-form {
+  flex: 1;
+}
+
+#gemini-character {
+  width: 250px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.character-image{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.character-image img {
+  max-width: 200px;
+  height: auto;
+  margin-left:auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+
+.character-comment {
+  padding: 10px;
+  background-color: white;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 0.9em;
+}
+
+/* 質問一覧のスタイル */
+.question-item {
+  border-bottom: 1px solid #dee2e6;
+  padding: 1rem 0;
+}
+
+.question-item a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.question-title {
+  word-break: break-all;
+}
+
+.timestamp {
+  display: block;
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 0.5rem;
+}
+
+/* Geminiキャラクター表示のスタイル（このまま） */
+.content-wrapper {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* ... 残りのGemini関連のスタイル ... */

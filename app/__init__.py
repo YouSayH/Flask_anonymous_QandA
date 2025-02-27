@@ -4,6 +4,7 @@ import os
 from flask import Flask
 from datetime import timedelta
 from werkzeug.middleware.proxy_fix import ProxyFix
+from dotenv import load_dotenv
 
 def create_app():
     """
@@ -11,6 +12,9 @@ def create_app():
     テンプレートフォルダや静的ファイルのフォルダを指定し、
     アプリケーション全体の設定やミドルウェアの登録を行います。
     """
+    # 環境変数の読み込み
+    load_dotenv()
+    
     # Flaskインスタンスを作成。テンプレートや静的ファイルのディレクトリを指定しています。
     app = Flask(__name__,
                 template_folder=os.path.join(os.path.dirname(__file__), '..', 'templates'),
