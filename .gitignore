@@ -1,2 +1,4 @@
-/hajimeteno.db__pycache__/
+/hajimeteno.db
+__pycache__/
+*/__pycache__/
 *.pyc

@@ -27,7 +27,7 @@
     </div>
     {% endif %}
   </header>
-
+  
   <main>
     <!-- 質問内容表示 -->
     <div class="question-container">
@@ -35,10 +35,27 @@
         <h2 class="question-title">{{ question['question_content'] | e }}</h2>
         <p class="timestamp">投稿日時: {{ question['created_at'] }}</p>
       </article>
-
+      
+    </section>
+    {% if is_question_owner %}
+      <button type="submit">ベストアンサーを決定する</button>
+    </form>
+    {% endif %}
+    
+    <!-- 回答投稿フォーム -->
+    <section id="post-answer">
+      <h3>回答を投稿する</h3>
+      <form action="{{ url_for('main.answer', question_id=question['id']) }}" method="POST">
+        <div class="post-answer-form">
+          <textarea name="answer" rows="4" placeholder="回答内容を入力してください" required></textarea>
+          <button type="submit" class="post-answer-button">回答を投稿する</button>
+        </div>
+      </form>
+    </section>
+    
       <!-- 回答一覧 -->
       {% if is_question_owner %}
-        <form method="POST" action="{{ url_for('main.select_best', question_id=question['id']) }}">
+      <form method="POST" action="{{ url_for('main.select_best', question_id=question['id']) }}">
       {% endif %}
       <section id="answers-list">
         <h3>回答一覧</h3>
@@ -59,22 +76,6 @@
           <li>まだ回答がありません。</li>
           {% endfor %}
         </ul>
-      </section>
-      {% if is_question_owner %}
-        <button type="submit">ベストアンサーを決定する</button>
-      </form>
-      {% endif %}
-
-      <!-- 回答投稿フォーム -->
-      <section id="post-answer">
-        <h3>回答を投稿する</h3>
-        <form action="{{ url_for('main.answer', question_id=question['id']) }}" method="POST">
-          <div class="post-answer-form">
-            <textarea name="answer" rows="4" placeholder="回答内容を入力してください" required></textarea>
-            <button type="submit" class="post-answer-button">回答を投稿する</button>
-          </div>
-        </form>
-      </section>
     </div>
   </main>
 </body>
