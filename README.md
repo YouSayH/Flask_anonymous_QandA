@@ -7,3 +7,6 @@
 ・python3 ・venv ・Flask ・Gunicorn　・python-dotenv
 <br>
 ・Werkzeug ・SQLite3 ・pytz ・google-generativeai
+
+<br>
+windowsで実行する場合gunicornが使えないのでwaitressを使う
